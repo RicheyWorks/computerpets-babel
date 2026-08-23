@@ -2,15 +2,37 @@
 
 **Localization Tool** — Crowdsourcing portal for translating pet dialogue and UI across locales without flattening character.
 
-Part of the [ComputerPets](https://github.com/RicheyWorks/computerpets) ecosystem. Index: [computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem).
+Part of [ComputerPets](https://github.com/RicheyWorks/computerpets). Map: [computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem).
 
-> Status: **design scaffold**. This repository ships the contract, README, and layout so implementation can start without renaming the organ later.
+| | |
+| --- | --- |
+| Status | Design scaffold — contract frozen, implementation next |
+| License | MIT |
+| First pet | Still [Rui on the desktop](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md). This organ is optional. |
 
-## Why it exists
+## The job
 
 Rui's English is short. Japanese must stay short. Babel ships string kits to Cortex + Companion + desktop, with reviewer gates.
 
 The flagship overlay already puts a living sticker on the real desktop (Rui first, 210 kinds). Babel does not replace that. It is one organ.
+
+## Who uses it
+
+Translators and reviewers. Cortex and Companion consume exports.
+
+## What it is not
+
+Not raw machine translation to prod. Tone lint can hold a string.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  translator --> babel
+  reviewer --> babel
+  babel -->|json| overlay
+  babel --> vox
+```
 
 ## Stack
 
@@ -18,13 +40,6 @@ TypeScript · React 19 · crowdin-style workflow · ICU messages · species-awar
 
 GroupId / namespace: `com.enterprisepet.babel`  
 Default listen: `8080`
-
-## Talks to
-
-- computerpets-cortex
-- computerpets-vox
-- computerpets-companion
-- computerpets-lore
 
 ## Contract
 
@@ -42,6 +57,27 @@ Default listen: `8080`
 ### Failure doctrine
 
 Machine-only translation → flagged, not shipped. Missing locale → English fallback. Tone lint fail → stay pending.
+
+## First slice
+
+Build this and stop. Do not boil the ocean.
+
+**en→es kit for overlay care verbs with suggest/approve/export.**
+
+You know it works when: Missing locale: English fallback. Machine-only strings flagged. Short tone stays short.
+
+## Environment
+
+`DATABASE_URL`, `REVIEWER_ROLES`
+
+Never commit secrets. Never put Steam or chain keys in the overlay.
+
+## Neighbors
+
+- computerpets-cortex
+- computerpets-vox
+- computerpets-companion
+- computerpets-lore
 
 ## Layout
 
@@ -63,13 +99,12 @@ cd app; npm install; npm run dev
 
 You do not need this service to meet Rui. The [flagship start-here](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md) is still the first pet.
 
-## Ecosystem
+## Links
 
-| Organ | Repo |
-| --- | --- |
-| Flagship desktop + Spring | [RicheyWorks/computerpets](https://github.com/RicheyWorks/computerpets) |
-| This organ | [RicheyWorks/computerpets-babel](https://github.com/RicheyWorks/computerpets-babel) |
-| Full map | [RicheyWorks/computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem) |
+- Flagship: [RicheyWorks/computerpets](https://github.com/RicheyWorks/computerpets)
+- This repo: [RicheyWorks/computerpets-babel](https://github.com/RicheyWorks/computerpets-babel)
+- Map: [RicheyWorks/computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem)
+- Contract file: [docs/CONTRACT.md](docs/CONTRACT.md)
 
 ## License
 
