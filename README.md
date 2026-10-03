@@ -1,30 +1,37 @@
 # Babel
 
-**Localization Tool** — Crowdsourcing portal for translating pet dialogue and UI across locales without flattening character.
+**Translate the words. Keep the pet's character.**
 
-Part of [ComputerPets](https://github.com/RicheyWorks/computerpets). Map: [computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem).
+A planned localization workspace for dialogue and UI, with translator suggestions, reviewer approval, and locale exports.
 
-| | |
+**Stage: design scaffold.** This checkout contains a design document and a source placeholder. The experience below is planned; there is no runnable app or integrated service yet.
+
+[Status](#status) · [Planned experience](#planned-experience) · [Contributor quickstart](#contributor-quickstart) · [Service contract](docs/CONTRACT.md) · [Ecosystem map](https://github.com/RicheyWorks/computerpets-ecosystem)
+
+## Status
+
+| Available today | What you can inspect |
 | --- | --- |
-| Status | Design scaffold — contract frozen, implementation next |
-| License | MIT |
-| First pet | Still [Rui on the desktop](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md). This organ is optional. |
+| [Service contract](docs/CONTRACT.md) | Intended behavior, boundaries, and planned dependencies. |
+| [Source placeholder](src/babel/index.ts) | Name metadata only; no package.json, app, or runtime is checked in. |
+| [MIT license](LICENSE) | Licensing terms for the repository. |
 
-## The job
+Gameplay, endpoints, integration arrows, and failure handling on this page describe implementation targets. No build/test harness, CI workflow, or product screenshots are included in this scaffold.
 
-Rui's English is short. Japanese must stay short. Babel ships string kits to Cortex + Companion + desktop, with reviewer gates.
+## Planned experience
 
-The flagship overlay already puts a living sticker on the real desktop (Rui first, 210 kinds). Babel does not replace that. It is one organ.
+- GET /v1/kits/{locale} — pending strings
+- POST /v1/suggest — translator proposal
+- POST /v1/approve — reviewer
+- GET /v1/export/{locale} — json for clients
 
-## Who uses it
+### Planned technology
 
-Translators and reviewers. Cortex and Companion consume exports.
+TypeScript · React 19 · crowdin-style workflow · ICU messages · species-aware tone guides
 
-## What it is not
+### Planned connections
 
-Not raw machine translation to prod. Tone lint can hold a string.
-
-## Architecture
+These arrows show intended dependencies, rather than working integrations.
 
 ```mermaid
 flowchart LR
@@ -34,82 +41,47 @@ flowchart LR
   babel --> vox
 ```
 
-## Stack
+## Contributor quickstart
 
-TypeScript · React 19 · crowdin-style workflow · ICU messages · species-aware tone guides
+With access to this private repository, Git and PowerShell are enough to review the scaffold:
 
-GroupId / namespace: `com.enterprisepet.babel`  
-Default listen: `8080`
+```powershell
+git clone https://github.com/RicheyWorks/computerpets-babel.git
+Set-Location computerpets-babel
+Get-Content docs/CONTRACT.md
+Get-Content src/babel/index.ts
+```
 
-## Contract
+Read [Service contract](docs/CONTRACT.md) before choosing implementation details. The commands above inspect the checked-in files; app installation, editor launch, and server startup become possible after a buildable project and entry point are added.
 
-### Data
-
-`StringKey(id, source, tone) · Suggestion(locale, text, user) · Kit(locale, completePct)`
-
-### Surface
-
-- GET /v1/kits/{locale} — pending strings
-- POST /v1/suggest — translator proposal
-- POST /v1/approve — reviewer
-- GET /v1/export/{locale} — json for clients
-
-### Failure doctrine
-
-Machine-only translation → flagged, not shipped. Missing locale → English fallback. Tone lint fail → stay pending.
-
-## First slice
-
-Build this and stop. Do not boil the ocean.
+### First implementation target
 
 **en→es kit for overlay care verbs with suggest/approve/export.**
 
 You know it works when: Missing locale: English fallback. Machine-only strings flagged. Short tone stays short.
 
-## Environment
+Treat this as an acceptance target for a future implementation. Start with the documented slice, add the required project setup and focused tests, and update these instructions with commands that work from a fresh clone.
 
-`DATABASE_URL`, `REVIEWER_ROLES`
+## Design boundaries
 
-Never commit secrets. Never put Steam or chain keys in the overlay.
+- Stay canon with 210 species. No illegal hybrids. No swapped voices.
+- Treat the desktop overlay as the main quest. This organ is optional until wired.
+- Fail soft: the overlay keeps walking if this service is down, unless this *is* the overlay.
+- No PII in public artifacts (Steam id, wallet, home path, webcam frames).
 
-## Neighbors
+**Required failure behavior:**
 
-- computerpets-cortex
-- computerpets-vox
-- computerpets-companion
-- computerpets-lore
+Machine-only translation → flagged, not shipped. Missing locale → English fallback. Tone lint fail → stay pending.
 
-## Layout
+## Ecosystem
 
-```
-computerpets-babel/
-  README.md           this file
-  LICENSE             MIT
-  docs/CONTRACT.md    the same contract, frozen for implementers
-  src/                implementation lands here
-```
+- [computerpets-cortex](https://github.com/RicheyWorks/computerpets-cortex)
+- [computerpets-vox](https://github.com/RicheyWorks/computerpets-vox)
+- [computerpets-companion](https://github.com/RicheyWorks/computerpets-companion)
+- [computerpets-lore](https://github.com/RicheyWorks/computerpets-lore)
 
-## Run (Windows)
-
-PowerShell, from this folder, after the flagship helpers (Git, Node LTS 22+, JDK 21 as needed):
-
-```powershell
-cd app; npm install; npm run dev
-```
-
-You do not need this service to meet Rui. The [flagship start-here](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md) is still the first pet.
-
-## Links
-
-- Flagship: [RicheyWorks/computerpets](https://github.com/RicheyWorks/computerpets)
-- This repo: [RicheyWorks/computerpets-babel](https://github.com/RicheyWorks/computerpets-babel)
-- Map: [RicheyWorks/computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem)
-- Contract file: [docs/CONTRACT.md](docs/CONTRACT.md)
+Start with the [ComputerPets flagship](https://github.com/RicheyWorks/computerpets) for the desktop pet. This repository describes an optional extension; the [ecosystem map](https://github.com/RicheyWorks/computerpets-ecosystem) explains the broader plan.
 
 ## License
 
 MIT. See [LICENSE](LICENSE).
-
----
-
-*Two hundred ten living kinds. Keep them so a line does not go quiet.*
